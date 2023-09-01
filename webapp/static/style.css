@@ -1,0 +1,219 @@
+/* Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Barlow:wght@300;400&family=Josefin+Sans:wght@400;700&family=Noto+Emoji&display=swap');
+
+/* Reset default styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* Body */
+body {
+    font-family: 'Barlow', Arial, sans-serif;
+    font-weight: 400;
+    background-color: #1a1a1a; /* Dark background color */
+    color: #eee; /* Light text color */
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Title */
+.title {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 3.5rem;
+    font-weight: 700;
+    text-align: center;
+    margin: 40px 0 40px 0;
+    color: #eee; /* White title text color */
+}
+
+#start_container {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 3.5rem;
+    font-weight: 700;
+    text-align: center;
+    color: rgb(255, 184, 51);
+    margin: 75px 0 96px 0;
+}
+
+.title-emoji {
+    font-family: 'Noto Emoji', sans-serif;
+    font-size: 2.76rem;
+    vertical-align: top;
+    padding-left: 4px;
+    font-weight: 400;
+    color: rgb(255, 184, 51);
+}
+
+@media (max-width: 600px) {
+    .title {font-size: 2.5rem;}
+    .title-emoji {font-size: 2rem;}
+    #start_container {font-size: 2.5rem;}
+}
+
+/* Game Container */
+.game-container {
+    justify-content: center;
+    max-width: 800px;
+    padding: 10px;
+    margin: 0 auto;
+}
+
+/* History Container and Question Container */
+#history_container {
+    font-family: 'Noto Emoji', sans-serif;
+    font-weight: 400;
+    font-size: 4rem;
+    text-align: center;
+    margin: 50px 40px 60px 40px;
+    line-height: 2;
+    letter-spacing: 20px;
+    max-width: 100%;
+    color: rgb(255, 184, 51);
+    /* display: none; */
+}
+
+/* History container smaller font on mobile */
+@media (max-width: 600px) {
+    #history_container {
+        font-size: 2.5rem;
+        letter-spacing: 10px;
+        margin: 20px 5px 40px 5px;
+    }
+}
+
+.question-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+}
+
+/* Question Container */
+.question-container {
+    font-family: 'Noto Emoji', sans-serif;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 20px auto;
+
+
+    /* width: 100%; */
+    max-width: calc((78px + 26px) * 4);
+    padding: 10px calc((50% - 78px) * 0.5) 10px calc((50% - 78px) * 0.5); /* 10px padding on left and right */
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* Arrange buttons in 4 columns */
+    grid-gap: 26px;  /* Space between buttons */
+    place-content: center;  /* Center content vertically and horizontally */
+    justify-items: center;  /* Align individual items horizontally */
+    align-items: center;  /* Align individual items vertically */
+    aspect-ratio: 1; /* To keep it always square */
+}
+
+/* Emoji Button */
+.emoji-btn {
+    background-color: #eee; /* Dark button color */
+    color: #333; /* Light text color */
+    font-size: 3rem;
+    border: none;
+    cursor: pointer;
+    padding: 10px 8px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+}
+
+@media (max-width: 600px) {
+    .emoji-btn {
+        font-size: 2rem;
+        padding: 6px;
+        margin: 10px;
+    }
+    .question-container {
+        grid-gap: 0px;
+    }
+}
+
+.emoji-btn:hover {
+    background-color: #333; /* Slightly darker button color on hover */
+    color: #eee; /* Light text color */
+    font-weight: 600;
+}
+
+#reroll_btn {
+    margin-top: 16px;
+    padding: 6px 32px 6px 32px;
+}
+
+/* Overlay Styles */
+.popup-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+  }
+  .popup-wrapper {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+  /* Popup Container Styles */
+  .popup {
+    margin-top: 20vh;
+    background-color: #1a1a1a;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    max-width: 400px;
+    min-width: 300px;
+    font-family: 'Barlow', sans-serif;
+  }
+  
+  /* Image Styles */
+  .popup-image {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  /* Title Styles */
+  .popup-title {
+    font-size: 1.2rem;
+    margin: 12px 0 40px 0;
+  }
+  
+  /* Button Styles */
+  .popup-btn-yes,
+  .popup-btn-no {
+    padding: 10px 20px;
+    margin: 0 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16pt;
+  }
+  
+  .popup-btn-yes {
+    background-color: #277c2a;
+    color: #fff;
+  }
+  
+  .popup-btn-no {
+    background-color: #9c261e;
+    color: #fff;
+  }
+  
+  /* Button Hover Effect */
+  .popup-btn-yes:hover,
+  .popup-btn-no:hover {
+    opacity: 0.8;
+  }
+  

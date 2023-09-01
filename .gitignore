@@ -1,0 +1,10 @@
+concept/
+data/*.*
+data/covers/*
+data/emojis_raw/*
+venv/
+scripts/.env
+
+webapp/node_modules/
+webapp/static/covers/*
+webapp/static/data/*
