@@ -9,3 +9,4 @@ scripts/.env
 webapp/node_modules/
 webapp/static/covers/*
 webapp/static/data/*
+webapp/static/bundle.js
