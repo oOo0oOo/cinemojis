@@ -10,6 +10,7 @@ class Game {
     private start_container: HTMLDivElement;
     private title: HTMLDivElement;
     private reroll_btn: HTMLButtonElement;
+    private search_input: HTMLInputElement;
 
     private movies: any[] = [];
     private emojis: string[] = [];
@@ -27,6 +28,7 @@ class Game {
         this.start_container = document.getElementById("start_container") as HTMLDivElement;
         this.title = document.getElementById("title") as HTMLDivElement;
         this.reroll_btn = document.getElementById("reroll_btn") as HTMLButtonElement;
+        this.search_input = document.getElementById("search_input") as HTMLInputElement;
 
         // Add click event listener to reroll button
         this.reroll_btn.addEventListener("click", this.reset_emoji_questions.bind(this, false, true));
@@ -47,6 +49,9 @@ class Game {
     
         // Add click event listener to unknown movie popup close button
         this.unknown_movie_popup.close_btn.addEventListener("click", this.start_new_game.bind(this));
+
+        // Add keyup event listener to search input
+        this.search_input.addEventListener("keyup", this.search_changed.bind(this));
     }
 
     suggestion_answer(answer: boolean) {
@@ -61,6 +66,21 @@ class Game {
 
         // Reset emoji questions
         this.reset_emoji_questions(false);
+    }
+
+    search_changed() {
+        const search = this.search_input.value.toLowerCase();
+        this.current_questions = [];
+        const candidates = this.engine.text_search_emojis(search);
+        candidates.forEach((emoji_index, i) => {
+            this.current_questions.push(emoji_index);
+            this.emoji_btns[i].set_emoji(this.emojis[emoji_index]);
+        });
+
+        // Hide the other emojis
+        for (let i = candidates.length; i < config.questionCount; i++) {
+            this.emoji_btns[i].hide();
+        }
     }
 
     async init() {
@@ -105,21 +125,37 @@ class Game {
     reset_emoji_questions(suggest_movie: boolean = true, force_random: boolean = false) {
         this.current_questions = [];
         if (this.did_first_click && suggest_movie) {
+            const num = this.engine.get_emoji_count();
+            if (num > config.hardMaxEmojis) {
+                // Display unknown movie popup
+                this.unknown_movie_popup.show();
+                return;
+            }
+
             // Find most likely movies
             this.movie_pick = this.engine.get_movie_suggestion();
 
             if (this.movie_pick[1] > config.movieSuggestionThreshold) {
                 // Display movie suggestion
                 this.suggestion_popup.show(this.movies[this.movie_pick[0]]);
-            } else if (this.engine.get_emoji_count() >= config.maxEmojis) {
-                this.unknown_movie_popup.show();
-                return;
+            } else {
+
+                if (num > config.maxEmojis) {
+                    // Display unknown movie popup
+                    this.unknown_movie_popup.show();
+                    return;
+                }
             }
         }
 
         let emojis;
         if (force_random) {
-            emojis = this.engine.get_random_emojis(16);
+            if (this.search_input.value.length > 0) {
+                this.search_changed();
+                return;
+            } else {
+                emojis = this.engine.get_random_emojis(16);
+            }
         } else {
             emojis = this.engine.get_best_emojis(16);
         }
@@ -140,6 +176,9 @@ class Game {
         this.engine.add_emoji(this.current_questions[index]);
         this.history_container.innerHTML += this.emojis[this.current_questions[index]] + " ";
         this.reset_emoji_questions();
+
+        // Reset the search input
+        this.search_input.value = "";
     }
 }
 

@@ -119,6 +119,38 @@ body {
     font-weight: 600;
 }
 
+.emoji-btn:hover {
+    background-color: #333; /* Slightly darker button color on hover */
+    color: #eee; /* Light text color */
+    font-weight: 600;
+}
+
+#utils_container {
+    margin-top: 40px;
+    display: flex;
+    max-width: 350px;
+}
+
+#reroll_btn {
+    padding: 6px 32px 6px 32px;
+}
+
+#search_bar {
+    margin-left: 32px;
+}
+
+#search_input {
+    padding: 6px 12px 6px 12px;
+    border-radius: 8px;
+    border: none;
+    height: 100%;
+    width: 100%;
+    font-size: 1.5rem;
+    font-family: 'Noto Emoji', 'Barlow', sans-serif;
+    font-weight: 600;
+    color: #333;
+}
+
 @media (max-width: 600px) {
     .emoji-btn {
         font-size: 2rem;
@@ -128,18 +160,12 @@ body {
     .question-container {
         grid-gap: 0px;
     }
-}
 
-.emoji-btn:hover {
-    background-color: #333; /* Slightly darker button color on hover */
-    color: #eee; /* Light text color */
-    font-weight: 600;
-}
-
-#reroll_btn {
-    margin-top: 16px;
-    padding: 6px 32px 6px 32px;
-    max-width: min-content;
+    #search_input {
+        font-size: 1.2rem;
+        margin: 10px;
+        max-height: 50px;
+    }
 }
 
 /* Overlay Styles */
@@ -213,3 +239,7 @@ body {
     opacity: 0.8;
   }
   
+
+.hidden {
+    display: none;
+}

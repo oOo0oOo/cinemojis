@@ -16,6 +16,15 @@ class EmojiBtn {
     set_emoji(emoji: string) {
         this.emoji = emoji;
         this.emoji_span.innerHTML = emoji;
+        this.show();
+    }
+
+    hide() {
+        this.container.classList.add("hidden");
+    }
+
+    show() {
+        this.container.classList.remove("hidden");
     }
 
     get_emoji() {

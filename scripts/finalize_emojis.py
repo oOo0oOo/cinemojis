@@ -36,6 +36,9 @@ def clean_emojis(txt):
     # Remove keycap emojis
     txt = re.sub(r'[0-9#*]', '', txt)
 
+    # Remove all skin tone emojis
+    txt = re.sub(r'🏻|🏼|🏽|🏾|🏿', '', txt)
+
     # Remove all emojis whose ord() code starts with 9176
     txt = ''.join([c for c in txt if not str(ord(c)).startswith("9176")])
 

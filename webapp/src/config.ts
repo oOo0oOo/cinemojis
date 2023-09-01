@@ -1,10 +1,12 @@
 const config = {
-  movieSuggestionThreshold: 13,
+  movieSuggestionThreshold: 15,
   questionCount: 16,
   wrongEmojiPenalty: -2,
-  maxEmojis: 8,
+  maxEmojis: 7,
+  hardMaxEmojis: 10,
   movieFile: "static/data/movies.csv",
   emojiFile: "static/data/emojis.txt",
+  emojiDescriptionsFile: "static/data/descriptions.txt",
   cinemojiFile: "static/data/cinemojis.json"
 };
 

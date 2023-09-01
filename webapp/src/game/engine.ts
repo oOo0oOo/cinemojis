@@ -7,6 +7,7 @@ class Engine {
 
     // Handles the 2D-array n_movies x n_emojis with scores for each emoji for each movie
     private cinemojis: Array<Array<number>> = [[]];
+    private descriptions: string[] = [];
 
     private selected_emojis: number[] = [];
     private removed_movies: number[] = [];
@@ -18,8 +19,8 @@ class Engine {
     }
 
     async load_data() {
-        const response3 = await fetch(config.cinemojiFile);
-        const text3 = await response3.text();
+        const response = await fetch(config.cinemojiFile);
+        const text3 = await response.text();
         this.cinemojis = JSON.parse(text3);
 
         // Penalty: Convert all 0 to -1
@@ -27,6 +28,11 @@ class Engine {
             movie.map(score => 
                 score === 0 ? config.wrongEmojiPenalty : score
         ));
+
+        // Load emoji descriptions
+        const response2 = await fetch(config.emojiDescriptionsFile);
+        const text2 = await response2.text();
+        this.descriptions = text2.split("\n");
     }
 
     start_new_game() {
@@ -117,6 +123,25 @@ class Engine {
                 continue;
             }
             result.push(sample);
+        }
+        return result;
+    }
+
+    text_search_emojis(text: string, max_num: number = 16): number[] {
+        // Search for non-selected emojis with descriptions that match the text
+        const result: number[] = [];
+        for (let i = 0; i < this.descriptions.length; i++) {
+            if (this.selected_emojis.includes(i)) {
+                continue;
+            }
+            const description = this.descriptions[i];
+            if (description.includes(text)) {
+                result.push(i);
+            }
+        }
+        if (result.length > max_num) {
+            // Randomly sample max_num emojis
+            return shuffleArray(result).slice(0, max_num);
         }
         return result;
     }
