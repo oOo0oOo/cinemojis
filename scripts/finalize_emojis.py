@@ -8,7 +8,8 @@ import os
 import re
 import html
 
-EMOJIS_PATH = '../data/emojis_raw_v1/'
+EMOJIS_PATH = '../data/emojis_raw/'
+EMOJIS_PATH2 = '../data/emojis_raw_v1/'
 MOVIES_PATH = '../data/movies.csv'
 
 MAX_REPEAT_EMOJI_PER_MOVIE = 8
@@ -32,22 +33,30 @@ def clean_emojis(txt):
     # Remove letter and number emojis
     txt = re.sub(r'[🇦-🇿]', '', txt)
 
+    # Remove keycap emojis
+    txt = re.sub(r'[0-9#*]', '', txt)
+
     # Remove all emojis whose ord() code starts with 9176
     txt = ''.join([c for c in txt if not str(ord(c)).startswith("9176")])
 
-    # Each emoji has to appear at most MAX_REPEAT_EMOJI_PER_MOVIE times and at least twice
+    # Each emoji has to appear at most MAX_REPEAT_EMOJI_PER_MOVIE times and at least three times
     unique_txt = ''.join(set(txt))
-    txt = ''.join([c * min(MAX_REPEAT_EMOJI_PER_MOVIE, txt.count(c)) for c in unique_txt if txt.count(c) > 1])
+    txt = ''.join([c * min(MAX_REPEAT_EMOJI_PER_MOVIE, txt.count(c)) for c in unique_txt if txt.count(c) > 2])
     return txt
 
 # Load all emoji files into a dictionary (filename)
 emojis = {}
 for filename in os.listdir(EMOJIS_PATH):
     ind = filename.split('.')[0]
-    with open(EMOJIS_PATH + filename, 'r') as f:
-        emojis[ind] = clean_emojis(f.read())
+    emoji = ""
+    with open(EMOJIS_PATH + filename, 'r') as f:    
+        emoji += f.read()
 
-print(f'Loaded {len(emojis)} emoji files.')
+    if os.path.exists(EMOJIS_PATH2):
+        with open(EMOJIS_PATH2 + filename, 'r') as f:
+            emoji += f.read()
+    
+    emojis[ind] = clean_emojis(emoji)
 
 # Get all unique emojis sorted by frequency
 all_emojis = "".join(emojis.values())
