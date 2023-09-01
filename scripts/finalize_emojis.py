@@ -8,7 +8,7 @@ import os
 import re
 import html
 
-EMOJIS_PATH = '../data/emojis_raw/'
+EMOJIS_PATH = '../data/emojis_raw_v1/'
 MOVIES_PATH = '../data/movies.csv'
 
 MAX_REPEAT_EMOJI_PER_MOVIE = 8
@@ -18,6 +18,10 @@ movies = pd.read_csv(MOVIES_PATH)
 def clean_emojis(txt):
     # Remove all whitespace
     txt = txt.replace(' ', '').replace('\n', '').replace('\t', '')
+    
+    # Remove weird characters
+    txt = re.sub(r'[️\u200d]', '', txt)
+    txt = txt.replace('\uFE0F', '')
 
     # Remove all alphanumeric characters
     txt = ''.join([c for c in txt if not c.isalnum()])
@@ -25,10 +29,7 @@ def clean_emojis(txt):
     # Remove all punctuation
     txt = ''.join([c for c in txt if not c in '!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~'])
 
-    # Remove weird characters
-    txt = re.sub(r'[️\u200d]', '', txt)
-
-    # Remove letter emojis
+    # Remove letter and number emojis
     txt = re.sub(r'[🇦-🇿]', '', txt)
 
     # Remove all emojis whose ord() code starts with 9176
