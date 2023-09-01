@@ -24,14 +24,15 @@ def process_movie(metadata):
     if os.path.isfile(f'{EMOJI_PATH}{ind}.txt'):
         return 0, 0
 
-    prompt = f'Summarize the movie "{title}" ({year}) using exclusively 20 emojis. No text explanation.'
+    # prompt = f'Summarize the movie "{title}" ({year}) using exclusively 20 emojis. No text explanation.'
+    prompt = f'25 emojis that best explain the movie "{title}" ({year}). Only emojis, no text explanations.'
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=[
             {"role": "user", "content": prompt}
         ],
         temperature=1,
-        max_tokens=100,
+        max_tokens=120,
         n=5
     )
 

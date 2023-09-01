@@ -71,10 +71,8 @@ body {
     text-align: center;
     margin: 50px 40px 60px 40px;
     line-height: 2;
-    letter-spacing: 20px;
     max-width: 100%;
     color: rgb(255, 184, 51);
-    /* display: none; */
 }
 
 /* History container smaller font on mobile */
@@ -87,8 +85,6 @@ body {
 }
 
 .question-wrapper {
-    display: flex;
-    flex-wrap: wrap;
     justify-content: center;
     width: 100%;
 }
@@ -99,9 +95,6 @@ body {
     font-weight: 600;
     text-align: center;
     margin-bottom: 20px auto;
-
-
-    /* width: 100%; */
     max-width: calc((78px + 26px) * 4);
     padding: 10px calc((50% - 78px) * 0.5) 10px calc((50% - 78px) * 0.5); /* 10px padding on left and right */
     display: grid;
@@ -123,6 +116,8 @@ body {
     padding: 10px 8px;
     border-radius: 8px;
     transition: background-color 0.3s ease;
+    font-family: 'Noto Emoji';
+    font-weight: 600;
 }
 
 @media (max-width: 600px) {
@@ -145,6 +140,7 @@ body {
 #reroll_btn {
     margin-top: 16px;
     padding: 6px 32px 6px 32px;
+    max-width: min-content;
 }
 
 /* Overlay Styles */

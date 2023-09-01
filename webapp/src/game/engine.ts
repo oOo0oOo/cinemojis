@@ -120,6 +120,10 @@ class Engine {
         }
         return result;
     }
+
+    get_emoji_count(): number {
+        return this.selected_emojis.length;
+    }
 }
 
 function shuffleArray<T>(array: T[]): T[] {

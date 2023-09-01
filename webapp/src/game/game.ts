@@ -2,6 +2,7 @@ import { config } from "../config";
 import { EmojiBtn } from "./emoji_btn";
 import { Engine } from "./engine";
 import { MovieSuggestionPopup } from "./suggestion";
+import { UnknownMoviePopup } from "./unknown_movie";
 
 class Game {
     private history_container: HTMLDivElement;
@@ -14,10 +15,11 @@ class Game {
     private emojis: string[] = [];
     private emoji_btns: EmojiBtn[] = [];
     private current_questions: number[] = [];
-    private first_click = false;
+    private did_first_click = false;
     private engine = new Engine();
     private suggestion_popup = new MovieSuggestionPopup();
     private movie_pick: number[] = [-1, 0];
+    private unknown_movie_popup = new UnknownMoviePopup();
 
     constructor() {
         this.history_container = document.getElementById("history_container") as HTMLDivElement;
@@ -42,6 +44,9 @@ class Game {
         // Add click event listener to suggestion popup yes and no buttons
         this.suggestion_popup.get_yes_btn().addEventListener("click", this.suggestion_answer.bind(this, true));
         this.suggestion_popup.get_no_btn().addEventListener("click", this.suggestion_answer.bind(this, false));
+    
+        // Add click event listener to unknown movie popup close button
+        this.unknown_movie_popup.close_btn.addEventListener("click", this.start_new_game.bind(this));
     }
 
     suggestion_answer(answer: boolean) {
@@ -57,8 +62,6 @@ class Game {
         // Reset emoji questions
         this.reset_emoji_questions(false);
     }
-
-
 
     async init() {
         await this.engine.init();
@@ -89,24 +92,31 @@ class Game {
         this.engine.start_new_game();
         this.start_container.style.display = "block";
         this.history_container.innerHTML = "";
-        this.first_click = false;
+        this.did_first_click = false;
         this.title.innerHTML = 'Think of a <span class="title-emoji">&#127916;</span>';
 
         // Reset emoji buttons
         this.reset_emoji_questions();
+
+        // Hide unknown movie popup
+        this.unknown_movie_popup.close();
     }
 
     reset_emoji_questions(suggest_movie: boolean = true, force_random: boolean = false) {
         this.current_questions = [];
-        if (this.first_click && suggest_movie) {
+        if (this.did_first_click && suggest_movie) {
             // Find most likely movies
             this.movie_pick = this.engine.get_movie_suggestion();
 
             if (this.movie_pick[1] > config.movieSuggestionThreshold) {
                 // Display movie suggestion
                 this.suggestion_popup.show(this.movies[this.movie_pick[0]]);
+            } else if (this.engine.get_emoji_count() >= config.maxEmojis) {
+                this.unknown_movie_popup.show();
+                return;
             }
         }
+
         let emojis;
         if (force_random) {
             emojis = this.engine.get_random_emojis(16);
@@ -120,15 +130,15 @@ class Game {
     }
 
     on_click_emoji(index: number) {
-        if (!this.first_click) {
-            this.first_click = true;
+        if (!this.did_first_click) {
+            this.did_first_click = true;
             this.start_container.style.display = "none";
             this.title.innerHTML = 'A <span class="title-emoji">&#127916;</span> about';
         }
 
         // Add emoji to selected emojis
         this.engine.add_emoji(this.current_questions[index]);
-        this.history_container.innerHTML += this.emojis[this.current_questions[index]];
+        this.history_container.innerHTML += this.emojis[this.current_questions[index]] + " ";
         this.reset_emoji_questions();
     }
 }
