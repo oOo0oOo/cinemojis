@@ -28,17 +28,16 @@ class MovieSuggestionPopup {
     // Create yes and no button
     this.yes_btn = document.createElement("button");
     this.yes_btn.classList.add("popup-btn-yes");
-    this.yes_btn.textContent = "Yes";
+    this.yes_btn.textContent = "👍";
     this.yes_btn.addEventListener("click", this.close.bind(this));
     this.container.appendChild(this.yes_btn);
 
     this.no_btn = document.createElement("button");
     this.no_btn.classList.add("popup-btn-no");
-    this.no_btn.textContent = "No";
+    this.no_btn.textContent = "👎";
     this.no_btn.addEventListener("click", this.close.bind(this));
     this.container.appendChild(this.no_btn);
-
-
+    
     // Create overlay
     this.overlay = document.createElement("div");
     this.overlay.classList.add("popup-overlay");
